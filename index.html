@@ -6,165 +6,123 @@
     <title>Legal Awareness Field App</title>
     <!-- Tailwind CSS Play CDN -->
     <script src="https://jsdelivr.net"></script>
-    <!-- React and ReactDOM CDN -->
-    <script src="https://unpkg.com" crossorigin></script>
-    <script src="https://unpkg.com" crossorigin></script>
-    <!-- Babel CDN (React Code को Browser के समझने लायक बनाने के लिए) -->
-    <script src="https://unpkg.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen p-4">
 
-    <!-- इस Div के अंदर पूरा App लोड होगा -->
-    <div id="root"></div>
+    <div class="max-w-6xl mx-auto space-y-6">
 
-    <script type="text/babel">
-        function FieldDataCollectionAppDesign() {
-            const stats = [
-                { title: 'Total Visits', value: '248' },
-                { title: 'Beneficiaries', value: '5,420' },
-                { title: 'School Visits', value: '92' },
-                { title: 'Village Visits', value: '156' },
-            ];
+        <!-- Header -->
+        <div class="bg-white rounded-3xl shadow-lg p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">Legal Awareness Field App</h1>
+                <p class="text-gray-500 mt-1">Mobile-friendly field data collection & reporting system</p>
+            </div>
+            <div class="flex gap-3 flex-wrap">
+                <button class="bg-blue-600 text-white px-5 py-3 rounded-2xl shadow hover:scale-105 transition font-semibold">+ New Entry</button>
+                <button class="bg-green-600 text-white px-5 py-3 rounded-2xl shadow hover:scale-105 transition font-semibold">Export Excel</button>
+            </div>
+        </div>
 
-            const reports = [
-                'Daily Report',
-                'Weekly Report',
-                'Monthly Summary',
-                'Village Wise Data',
-                'School Wise Data',
-                'Beneficiary Analysis',
-            ];
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-3xl p-5 shadow-md">
+                <p class="text-gray-500 text-sm">Total Visits</p>
+                <h2 class="text-3xl font-bold mt-2 text-gray-800">248</h2>
+            </div>
+            <div class="bg-white rounded-3xl p-5 shadow-md">
+                <p class="text-gray-500 text-sm">Beneficiaries</p>
+                <h2 class="text-3xl font-bold mt-2 text-gray-800">5,420</h2>
+            </div>
+            <div class="bg-white rounded-3xl p-5 shadow-md">
+                <p class="text-gray-500 text-sm">School Visits</p>
+                <h2 class="text-3xl font-bold mt-2 text-gray-800">92</h2>
+            </div>
+            <div class="bg-white rounded-3xl p-5 shadow-md">
+                <p class="text-gray-500 text-sm">Village Visits</p>
+                <h2 class="text-3xl font-bold mt-2 text-gray-800">156</h2>
+            </div>
+        </div>
 
-            return (
-                <div class="p-4">
-                    <div class="max-w-6xl mx-auto space-y-6">
+        <!-- Main Grid -->
+        <div class="grid lg:grid-cols-3 gap-6">
 
-                        {/* Header */}
-                        <div class="bg-white rounded-3xl shadow-lg p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                            <div>
-                                <h1 class="text-3xl font-bold text-gray-800">
-                                    Legal Awareness Field App
-                                </h1>
-                                <p class="text-gray-500 mt-1">
-                                    Mobile-friendly field data collection & reporting system
-                                </p>
-                            </div>
+            <!-- Entry Form -->
+            <div class="lg:col-span-2 bg-white rounded-3xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-5">New Field Entry</h2>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <input class="border border-gray-200 rounded-2xl p-3" placeholder="Officer Name" />
+                    <input type="date" class="border border-gray-200 rounded-2xl p-3" />
+                    <select class="border border-gray-200 rounded-2xl p-3 bg-white">
+                        <option>Select Area Type</option>
+                        <option>Village</option>
+                        <option>School</option>
+                        <option>College</option>
+                        <option>Camp</option>
+                    </select>
+                    <input class="border border-gray-200 rounded-2xl p-3" placeholder="Village / School Name" />
+                    <input class="border border-gray-200 rounded-2xl p-3" placeholder="Block / Tehsil" />
+                    <input type="number" class="border border-gray-200 rounded-2xl p-3" placeholder="Beneficiaries Count" />
+                </div>
+                <textarea class="border border-gray-200 rounded-2xl p-3 mt-4 w-full h-28" placeholder="Program Details / Remarks"></textarea>
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    <input type="file" class="border border-gray-200 rounded-2xl p-3 w-full" />
+                    <button class="bg-blue-600 text-white rounded-2xl p-3 font-semibold hover:scale-105 transition">Save Entry</button>
+                </div>
+            </div>
 
-                            <div class="flex gap-3 flex-wrap">
-                                <button class="bg-blue-600 text-white px-5 py-3 rounded-2xl shadow hover:scale-105 transition">
-                                    + New Entry
-                                </button>
-                                <button class="bg-green-600 text-white px-5 py-3 rounded-2xl shadow hover:scale-105 transition font-semibold">
-                                    Export Excel
-                                </button>
-                            </div>
-                        </div>
+            <!-- Reports & Filters -->
+            <div class="bg-white rounded-3xl shadow-lg p-6 space-y-5">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Filters</h2>
+                    <div class="space-y-3 mt-4">
+                        <input type="date" class="border border-gray-200 rounded-2xl p-3 w-full" />
+                        <select class="border border-gray-200 rounded-2xl p-3 w-full bg-white"><option>Select Village</option></select>
+                        <select class="border border-gray-200 rounded-2xl p-3 w-full bg-white"><option>Select Week</option></select>
+                        <select class="border border-gray-200 rounded-2xl p-3 w-full bg-white"><option>Select Month</option></select>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Reports</h2>
+                    <div class="space-y-3">
+                        <button class="w-full text-left bg-gray-100 hover:bg-gray-200 rounded-2xl p-4 transition font-medium">Daily Report</button>
+                        <button class="w-full text-left bg-gray-100 hover:bg-gray-200 rounded-2xl p-4 transition font-medium">Weekly Report</button>
+                        <button class="w-full text-left bg-gray-100 hover:bg-gray-200 rounded-2xl p-4 transition font-medium">Monthly Summary</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        {/* Stats */}
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {stats.map((item, index) => (
-                                <div key={index} class="bg-white rounded-3xl p-5 shadow-md">
-                                    <p class="text-gray-500 text-sm">{item.title}</p>
-                                    <h2 class="text-3xl font-bold mt-2 text-gray-800">
-                                        {item.value}
-                                    </h2>
-                                </div>
-                            ))}
-                        </div>
+        <!-- Table -->
+        <div class="bg-white rounded-3xl shadow-lg p-6 overflow-auto">
+            <div class="flex justify-between items-center mb-4 gap-4">
+                <h2 class="text-2xl font-bold text-gray-800">Recent Entries</h2>
+                <input class="border border-gray-200 rounded-2xl p-3" placeholder="Search..." />
+            </div>
+            <table class="w-full min-w-[800px] text-sm text-left">
+                <thead>
+                    <tr class="border-b border-gray-100 text-gray-500">
+                        <th class="p-3">Date</th>
+                        <th class="p-3">Officer</th>
+                        <th class="p-3">Location</th>
+                        <th class="p-3">Type</th>
+                        <th class="p-3">Beneficiaries</th>
+                        <th class="p-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b border-gray-50 hover:bg-gray-50">
+                        <td class="p-3">10/03/2026</td>
+                        <td class="p-3 font-medium">Sunil Rawat</td>
+                        <td class="p-3">Gram Palam</td>
+                        <td class="p-3">Legal Awareness</td>
+                        <td class="p-3">300</td>
+                        <td class="p-3"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Saved</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-                        {/* Main Grid */}
-                        <div class="grid lg:grid-cols-3 gap-6">
+    </div>
 
-                            {/* Entry Form */}
-                            <div class="lg:col-span-2 bg-white rounded-3xl shadow-lg p-6">
-                                <h2 class="text-2xl font-bold text-gray-800 mb-5">
-                                    New Field Entry
-                                </h2>
-
-                                <div class="grid md:grid-cols-2 gap-4">
-                                    <input class="border border-gray-200 rounded-2xl p-3" placeholder="Officer Name" />
-                                    <input type="date" class="border border-gray-200 rounded-2xl p-3" />
-                                    <select class="border border-gray-200 rounded-2xl p-3 bg-white">
-                                        <option>Select Area Type</option>
-                                        <option>Village</option>
-                                        <option>School</option>
-                                        <option>College</option>
-                                        <option>Camp</option>
-                                    </select>
-                                    <input class="border border-gray-200 rounded-2xl p-3" placeholder="Village / School Name" />
-                                    <input class="border border-gray-200 rounded-2xl p-3" placeholder="Block / Tehsil" />
-                                    <input type="number" class="border border-gray-200 rounded-2xl p-3" placeholder="Beneficiaries Count" />
-                                </div>
-
-                                <textarea class="border border-gray-200 rounded-2xl p-3 mt-4 w-full h-28" placeholder="Program Details / Remarks"></textarea>
-
-                                <div class="grid md:grid-cols-2 gap-4 mt-4">
-                                    <input type="file" class="border border-gray-200 rounded-2xl p-3 w-full" />
-                                    <button class="bg-blue-600 text-white rounded-2xl p-3 font-semibold hover:scale-105 transition">
-                                        Save Entry
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Reports & Filters */}
-                            <div class="bg-white rounded-3xl shadow-lg p-6 space-y-5">
-                                <div>
-                                    <h2 class="text-2xl font-bold text-gray-800">Filters</h2>
-                                    <div class="space-y-3 mt-4">
-                                        <input type="date" class="border border-gray-200 rounded-2xl p-3 w-full" />
-                                        <select class="border border-gray-200 rounded-2xl p-3 w-full bg-white"><option>Select Village</option></select>
-                                        <select class="border border-gray-200 rounded-2xl p-3 w-full bg-white"><option>Select Week</option></select>
-                                        <select class="border border-gray-200 rounded-2xl p-3 w-full bg-white"><option>Select Month</option></select>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Reports</h2>
-                                    <div class="space-y-3">
-                                        {reports.map((item, index) => (
-                                            <button key={index} class="w-full text-left bg-gray-100 hover:bg-gray-200 rounded-2xl p-4 transition font-medium">
-                                                {item}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Table */}
-                        <div class="bg-white rounded-3xl shadow-lg p-6 overflow-auto">
-                            <div class="flex justify-between items-center mb-4 gap-4">
-                                <h2 class="text-2xl font-bold text-gray-800">Recent Entries</h2>
-                                <input class="border border-gray-200 rounded-2xl p-3" placeholder="Search..." />
-                            </div>
-
-                            <table class="w-full min-w-[800px] text-sm text-left">
-                                <thead>
-                                    <tr class="border-b border-gray-100 text-gray-500">
-                                        <th class="p-3">Date</th>
-                                        <th class="p-3">Officer</th>
-                                        <th class="p-3">Location</th>
-                                        <th class="p-3">Type</th>
-                                        <th class="p-3">Beneficiaries</th>
-                                        <th class="p-3">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="border-b border-gray-50 hover:bg-gray-50">
-                                        <td class="p-3">10/03/2026</td>
-                                        <td class="p-3 font-medium">Sunil Rawat</td>
-                                        <td class="p-3">Gram Palam</td>
-                                        <td class="p-3">Legal Awareness</td>
-                                        <td class="p-3">300</td>
-                                        <td class="p-3"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">Saved</span></td>
-                                    </tr>
-                                    <tr class="border-b border-gray-50 hover:bg-gray-50">
-                                        <td class="p-3">10/03/2026</td>
-                                        <td class="p-3 font-medium">Sangeeta Devi</td>
-                                        <td class="p-3">Palli Gaon</td>
-                                        <td class="p-3">School Visit</td>
-                                        <td class="p-3">35</td>
-                                        <td class="p-3"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">Synced</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+</body>
+</html>
