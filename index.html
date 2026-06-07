@@ -13,7 +13,95 @@
       box-sizing:border-box;
       font-family:Arial, sans-serif;
     }
+<script type="module">
 
+import { db, collection, addDoc, getDocs } from "./firebase.js";
+
+window.saveEntry = async function () {
+
+  const officer = document.getElementById("officer").value;
+  const visitDate = document.getElementById("visitDate").value;
+  const areaType = document.getElementById("areaType").value;
+  const location = document.getElementById("location").value;
+  const block = document.getElementById("block").value;
+  const beneficiaries = document.getElementById("beneficiaries").value;
+  const remarks = document.getElementById("remarks").value;
+
+  if (
+    !officer ||
+    !visitDate ||
+    !location
+  ) {
+    alert("Please fill all required fields");
+    return;
+  }
+
+  try {
+
+    await addDoc(collection(db, "entries"), {
+      officer,
+      visitDate,
+      areaType,
+      location,
+      block,
+      beneficiaries,
+      remarks,
+      createdAt: new Date()
+    });
+
+    alert("Entry Saved Successfully");
+
+    document.getElementById("officer").value = "";
+    document.getElementById("visitDate").value = "";
+    document.getElementById("location").value = "";
+    document.getElementById("block").value = "";
+    document.getElementById("beneficiaries").value = "";
+    document.getElementById("remarks").value = "";
+
+    loadEntries();
+
+  } catch (error) {
+
+    console.error(error);
+    alert("Error: " + error.message);
+
+  }
+
+};
+
+async function loadEntries() {
+
+  const table = document.getElementById("entriesTable");
+
+  if (!table) return;
+
+  table.innerHTML = "";
+
+  const querySnapshot =
+    await getDocs(collection(db, "entries"));
+
+  querySnapshot.forEach((doc) => {
+
+    const d = doc.data();
+
+    table.innerHTML += `
+      <tr>
+        <td>${d.visitDate || ""}</td>
+        <td>${d.officer || ""}</td>
+        <td>${d.location || ""}</td>
+        <td>${d.areaType || ""}</td>
+        <td>${d.beneficiaries || ""}</td>
+        <td><span class="badge">Saved</span></td>
+      </tr>
+    `;
+
+  });
+
+}
+
+loadEntries();
+
+</script>
     body{
       background:#f3f4f6;
       padding:15px;
