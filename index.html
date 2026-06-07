@@ -1,41 +1,174 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Firebase Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal Awareness Field App</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f3f4f6;
+  padding:15px;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+}
+
+.card{
+  background:white;
+  padding:20px;
+  margin-bottom:15px;
+  border-radius:10px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+input,select,textarea{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+}
+
+button{
+  padding:10px 15px;
+  background:#2563eb;
+  color:white;
+  border:none;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  border:1px solid #ddd;
+  padding:8px;
+}
+</style>
 </head>
 
 <body>
 
-<h2>Firebase Test App</h2>
+<div class="container">
+
+<div class="card">
+<h2>Field Data Entry</h2>
 
 <input id="officer" placeholder="Officer Name">
-<button onclick="saveEntry()">Save</button>
+<input type="date" id="visitDate">
+
+<select id="areaType">
+<option>Village</option>
+<option>School</option>
+<option>College</option>
+<option>Camp</option>
+</select>
+
+<input id="location" placeholder="Location">
+<input id="block" placeholder="Block">
+<input type="number" id="beneficiaries" placeholder="Beneficiaries">
+<textarea id="remarks" placeholder="Remarks"></textarea>
+
+<button onclick="saveEntry()">Save Entry</button>
+</div>
+
+<div class="card">
+<h3>Total Entries: <span id="totalVisits">0</span></h3>
+<h3>Total Beneficiaries: <span id="totalBeneficiaries">0</span></h3>
+</div>
+
+<div class="card">
+
+<h3>Recent Entries</h3>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Officer</th>
+<th>Location</th>
+<th>Type</th>
+<th>Beneficiaries</th>
+</tr>
+</thead>
+
+<tbody id="entriesTable"></tbody>
+</table>
+
+</div>
+
+</div>
 
 <script type="module">
 
-import { db, collection, addDoc } from "./firebase.js";
+import { db, collection, addDoc, getDocs } from "./firebase.js";
 
 window.saveEntry = async function(){
 
-  try{
+try{
 
-    await addDoc(collection(db,"entries"),{
-      officer: document.getElementById("officer").value,
-      createdAt: new Date()
-    });
+await addDoc(collection(db,"entries"),{
 
-    alert("Saved Successfully");
+officer:officer.value,
+visitDate:visitDate.value,
+areaType:areaType.value,
+location:location.value,
+block:block.value,
+beneficiaries:Number(beneficiaries.value),
+remarks:remarks.value,
+createdAt:new Date()
 
-  }catch(error){
+});
 
-    alert(error.message);
-    console.error(error);
+alert("Saved Successfully");
 
-  }
+loadData();
+
+}catch(e){
+alert(e.message);
+}
 
 }
+
+async function loadData(){
+
+let snap = await getDocs(collection(db,"entries"));
+
+let table="";
+let total=0;
+let ben=0;
+
+snap.forEach(doc=>{
+
+let d = doc.data();
+
+table += `
+<tr>
+<td>${d.visitDate}</td>
+<td>${d.officer}</td>
+<td>${d.location}</td>
+<td>${d.areaType}</td>
+<td>${d.beneficiaries}</td>
+</tr>
+`;
+
+total++;
+ben += Number(d.beneficiaries || 0);
+
+});
+
+document.getElementById("entriesTable").innerHTML = table;
+document.getElementById("totalVisits").innerText = total;
+document.getElementById("totalBeneficiaries").innerText = ben;
+
+}
+
+loadData();
 
 </script>
 
