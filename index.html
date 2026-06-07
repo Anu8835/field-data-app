@@ -3,52 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Legal Awareness Field App</title>
+<title>Field Data App PRO</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
 
 <style>
-body{
-  font-family:Arial;
-  background:#f3f4f6;
-  padding:15px;
-}
-
-.container{
-  max-width:1000px;
-  margin:auto;
-}
-
-.card{
-  background:white;
-  padding:20px;
-  margin-bottom:15px;
-  border-radius:10px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-input,select,textarea{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-}
-
-button{
-  padding:10px 15px;
-  background:#2563eb;
-  color:white;
-  border:none;
-  margin-top:10px;
-  cursor:pointer;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,td{
-  border:1px solid #ddd;
-  padding:8px;
-}
+body{font-family:Arial;background:#f3f4f6;padding:15px}
+.container{max-width:1000px;margin:auto}
+.card{background:#fff;padding:20px;margin-bottom:15px;border-radius:10px}
+input,select,textarea{width:100%;padding:10px;margin-top:8px}
+button{padding:10px 15px;background:#2563eb;color:#fff;border:none;margin-top:10px;cursor:pointer}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #ddd;padding:8px}
 </style>
 </head>
 
@@ -57,7 +24,7 @@ th,td{
 <div class="container">
 
 <div class="card">
-<h2>Field Data Entry</h2>
+<h2>Field Data Entry PRO</h2>
 
 <input id="officer" placeholder="Officer Name">
 <input type="date" id="visitDate">
@@ -75,10 +42,12 @@ th,td{
 <textarea id="remarks" placeholder="Remarks"></textarea>
 
 <button onclick="saveEntry()">Save Entry</button>
+<button onclick="exportExcel()">Export Excel</button>
+
 </div>
 
 <div class="card">
-<h3>Total Entries: <span id="totalVisits">0</span></h3>
+<h3>Total Visits: <span id="totalVisits">0</span></h3>
 <h3>Total Beneficiaries: <span id="totalBeneficiaries">0</span></h3>
 </div>
 
@@ -108,12 +77,11 @@ th,td{
 
 import { db, collection, addDoc, getDocs } from "./firebase.js";
 
+let allData = [];
+
 window.saveEntry = async function(){
 
-try{
-
 await addDoc(collection(db,"entries"),{
-
 officer:officer.value,
 visitDate:visitDate.value,
 areaType:areaType.value,
@@ -122,18 +90,12 @@ block:block.value,
 beneficiaries:Number(beneficiaries.value),
 remarks:remarks.value,
 createdAt:new Date()
-
 });
 
 alert("Saved Successfully");
-
 loadData();
 
-}catch(e){
-alert(e.message);
-}
-
-}
+};
 
 async function loadData(){
 
@@ -143,9 +105,11 @@ let table="";
 let total=0;
 let ben=0;
 
-snap.forEach(doc=>{
+allData = [];
 
+snap.forEach(doc=>{
 let d = doc.data();
+allData.push(d);
 
 table += `
 <tr>
@@ -158,8 +122,7 @@ table += `
 `;
 
 total++;
-ben += Number(d.beneficiaries || 0);
-
+ben += Number(d.beneficiaries||0);
 });
 
 document.getElementById("entriesTable").innerHTML = table;
@@ -167,6 +130,24 @@ document.getElementById("totalVisits").innerText = total;
 document.getElementById("totalBeneficiaries").innerText = ben;
 
 }
+
+window.exportExcel = function(){
+
+let csv = "Date,Officer,Location,Type,Beneficiaries\n";
+
+allData.forEach(d=>{
+csv += `${d.visitDate},${d.officer},${d.location},${d.areaType},${d.beneficiaries}\n`;
+});
+
+let blob = new Blob([csv],{type:"text/csv"});
+let url = URL.createObjectURL(blob);
+
+let a = document.createElement("a");
+a.href = url;
+a.download = "field-data.csv";
+a.click();
+
+};
 
 loadData();
 
